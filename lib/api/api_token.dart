@@ -9,7 +9,6 @@ class UsersToken {
 }
 
 class UsersTokenConverter extends JsonConverter<UsersToken, String> {
-
   const UsersTokenConverter();
 
   @override
@@ -17,7 +16,6 @@ class UsersTokenConverter extends JsonConverter<UsersToken, String> {
 
   @override
   String toJson(UsersToken object) => object.token;
-
 }
 
 class UserToken {
@@ -27,7 +25,6 @@ class UserToken {
 }
 
 class UserTokenConverter extends JsonConverter<UserToken, String> {
-
   const UserTokenConverter();
 
   @override

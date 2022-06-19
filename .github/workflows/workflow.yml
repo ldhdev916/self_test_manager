@@ -1,0 +1,51 @@
+on:
+  push:
+    tags:
+      - v*
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+      - name: Setup Flutter Dependencies
+        run: flutter pub get
+      - name: Setup Android Signature
+        run: |
+          cd android
+          echo "${{ secrets.KEY_JKS }}" | base64 -d > key.jks
+          PASSWORD=${{ secrets.PASSWORD }}
+          KEY_ALIAS=${{ secrets.KEY_ALIAS }}
+          echo -e "storePassword=$PASSWORD\nkeyPassword=$PASSWORD\nkeyAlias=$KEY_ALIAS\nstoreFile=../key.jks" > key.properties
+      - name: Build APK
+        run: flutter build apk --split-per-abi
+      - name: Release APK
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.TOKEN }}
+          file: ./build/app/outputs/flutter-apk/app.apk
+          overwrite: true
+  windows:
+    runs-on: windows-latest
+    needs: build
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+      - name: Setup Flutter Dependencies
+        run: flutter pub get
+      - name: Build Windows exe
+        run: flutter build windows
+      - name: Zip Windows Build Files
+        uses: papeloto/action-zip@v1
+        with:
+          files: ./build/windows/runner/Release
+          dest: 자가진단 관리.zip
+      - name: Release Windows exe
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.TOKEN }}
+          file: ./자가진단 관리.zip

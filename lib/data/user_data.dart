@@ -20,6 +20,7 @@ class UserData {
   final DateTime birthday;
   final String password;
 
+  @JsonKey(name: "last_registered_at")
   final DateTime? lastRegisteredAt;
 
   factory UserData.fromJson(Map<String, dynamic> json) =>

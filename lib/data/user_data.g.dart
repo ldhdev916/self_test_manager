@@ -13,9 +13,9 @@ UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(
       stageCode: json['stage_code'] as int,
       birthday: const BirthdayConverter().fromJson(json['birthday'] as String),
       password: json['password'] as String,
-      lastRegisteredAt: json['lastRegisteredAt'] == null
+      lastRegisteredAt: json['last_registered_at'] == null
           ? null
-          : DateTime.parse(json['lastRegisteredAt'] as String),
+          : DateTime.parse(json['last_registered_at'] as String),
     );
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
@@ -25,5 +25,5 @@ Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
       'stage_code': instance.stageCode,
       'birthday': const BirthdayConverter().toJson(instance.birthday),
       'password': instance.password,
-      'lastRegisteredAt': instance.lastRegisteredAt?.toIso8601String(),
+      'last_registered_at': instance.lastRegisteredAt?.toIso8601String(),
     };

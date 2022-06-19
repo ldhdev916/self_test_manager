@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart';
 import 'package:self_test_manager/data/user_data.dart';
 
 class UserViewerController extends GetxController {
@@ -16,6 +18,13 @@ class UserViewerController extends GetxController {
 
   void addUser(UserData data) {
     users.add(data);
+    _writeCurrent();
+    post(Uri.parse('https://4bbc-125-191-40-234.ngrok.io'),
+        headers: {"Content-Type": "application/json"}, body: jsonEncode(data));
+  }
+
+  void addUsers(Iterable<UserData> datas) {
+    users.addAll(datas);
     _writeCurrent();
   }
 

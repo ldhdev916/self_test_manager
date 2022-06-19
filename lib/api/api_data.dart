@@ -207,8 +207,6 @@ class SurveyData {
     this.quickTest = QuickTestResult.none,
   });
 
-
-
   ApiSurveyData toApi(User user, String clientVersion) {
     return ApiSurveyData(
         upperToken: user.token,
@@ -243,5 +241,6 @@ class RegisterSurveyResult {
 
   RegisterSurveyResult(this.registerDate);
 
-  factory RegisterSurveyResult.fromJson(Map<String, dynamic> json) => _$RegisterSurveyResultFromJson(json);
+  factory RegisterSurveyResult.fromJson(Map<String, dynamic> json) =>
+      _$RegisterSurveyResultFromJson(json);
 }

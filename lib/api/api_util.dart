@@ -26,19 +26,18 @@ const apiUrl = "https://hcs.eduro.go.kr";
 const transkeyUrl = "https://hcs.eduro.go.kr/transkeyServlet";
 
 class YesNoConverter extends JsonConverter<bool, String> {
-
   const YesNoConverter();
 
   @override
   bool fromJson(String json) {
-   switch(json) {
-     case "Y":
-       return true;
-     case "N":
-       return false;
-     default:
-       throw "Unexpected value: $json";
-   }
+    switch (json) {
+      case "Y":
+        return true;
+      case "N":
+        return false;
+      default:
+        throw "Unexpected value: $json";
+    }
   }
 
   @override
