@@ -22,15 +22,21 @@ void main() async {
   runApp(const MyApp());
 
   if (await _isOutdated()) {
-    final String assetName;
+    final String fileExtension;
     if (Platform.isAndroid) {
-      assetName = "app.apk";
+      fileExtension = "apk";
     } else if (Platform.isWindows) {
-      assetName = "default.zip";
+      fileExtension = "zip";
     } else {
       return;
     }
-    final assetUrl = await _getAssetUrl(assetName);
+    Uri assetUrl;
+    try {
+      assetUrl = await _getAssetUrl(fileExtension);
+    } catch (e) {
+      assetUrl = Uri.parse(
+          "https://github.com/ldhdev916/self_test_manager/releases/latest");
+    }
 
     Get.defaultDialog(
         title: "업데이트",
@@ -43,7 +49,7 @@ void main() async {
   }
 }
 
-final _version = Version(1, 0, 0);
+final _version = Version(1, 0, 1);
 
 Future<bool> _isOutdated() async {
   final response = await get(Uri.parse(
@@ -54,15 +60,15 @@ Future<bool> _isOutdated() async {
   return Version.parse(latestTag.substring(1)) > _version;
 }
 
-Future<Uri> _getAssetUrl(String asset) async {
+Future<Uri> _getAssetUrl(String fileExtension) async {
   final response = await get(Uri.parse(
       "https://api.github.com/repos/ldhdev916/self_test_manager/releases/latest"));
   final map = jsonDecode(response.body);
 
   final assets = map["assets"] as List;
 
-  return Uri.parse(assets.firstWhere(
-      (element) => element["name"] == asset)["browser_download_url"]);
+  return Uri.parse(assets.firstWhere((element) => (element["name"] as String)
+      .endsWith(fileExtension))["browser_download_url"]);
 }
 
 class MyApp extends StatelessWidget {

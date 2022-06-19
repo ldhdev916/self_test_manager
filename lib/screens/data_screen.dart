@@ -87,9 +87,9 @@ class DataScreen extends GetView<UserViewerController> {
                 color: Colors.green),
             MainButton(
                 onPressed: () async {
-                  final directory = Platform.isAndroid
-                      ? Directory("/storage/emulated/0/Download")
-                      : (await getDownloadsDirectory())!;
+                  final directory = (await (Platform.isAndroid
+                      ? getExternalStorageDirectory()
+                      : getDownloadsDirectory()))!;
 
                   if (!(await directory.exists())) {
                     directory.create(recursive: true);
@@ -97,7 +97,7 @@ class DataScreen extends GetView<UserViewerController> {
 
                   await File("${directory.path}/자가진단 데이터.json")
                       .writeAsString(jsonEncode(controller.users));
-                  Get.snackbar("추출 성공", "자가진단 사용자 데이터가 다운로드 폴더에 저장되었습니다");
+                  Get.snackbar("추출 성공", "자가진단 사용자 데이터가 폴더에 저장되었습니다");
                 },
                 icon: const Icon(Icons.output),
                 labelText: "데이터 추출",
