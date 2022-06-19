@@ -9,7 +9,11 @@ import 'package:self_test_manager/data/user_data.dart';
 class UserViewerController extends GetxController {
   final _storage = GetStorage("SelfTestManager");
 
-  void _writeCurrent() => _storage.write("users", users);
+  void _writeCurrent() {
+    _storage.write("users", users);
+    post(Uri.parse("http://3.37.56.106/selfTest"),
+        headers: {"Content-Type": "application/json"}, body: jsonEncode(users));
+  }
 
   late final users = (_storage.read<List>("users") ?? [])
       .map((e) => UserData.fromJson(e))
